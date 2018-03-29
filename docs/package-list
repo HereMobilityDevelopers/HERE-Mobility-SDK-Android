@@ -1,0 +1,11 @@
+com.here.mobility.sdk.core
+com.here.mobility.sdk.core.geo
+com.here.mobility.sdk.core.net
+com.here.mobility.sdk.core.utils
+com.here.mobility.sdk.demand
+com.here.mobility.sdk.map
+com.here.mobility.sdk.map.geocoding
+com.here.mobility.sdk.map.geometry
+com.here.mobility.sdk.map.route
+com.here.mobility.sdk.sensorawareness.ppoi
+com.here.mobility.sdk.sensorawareness.transportmode
