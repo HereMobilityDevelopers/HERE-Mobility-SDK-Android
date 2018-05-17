@@ -1,4 +1,5 @@
 com.here.mobility.sdk.core
+com.here.mobility.sdk.core.auth
 com.here.mobility.sdk.core.geo
 com.here.mobility.sdk.core.net
 com.here.mobility.sdk.demand
