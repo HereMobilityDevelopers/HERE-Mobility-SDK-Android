@@ -1,5 +1,5 @@
 # HERE Mobility - Android SDK
-### Version 1.0.13, June 2018
+### Version 1.0.15, August 2018
 Copyright © 2018, HERE Technologies. All rights reserved. The software, information and all other materials contain in this documentation are confidential and proprietary information of HERE Technologies and are protected by applicable copyright legislation. The disclosure of information contained herein does not constitute any license or authorization to use or disclose information, ideas or concepts presented. No part of this documentation may be disclosed to any third party, copied, reproduced or stored on any type of media or used in any way by any party without the express prior, written consent of Here Technologies. This software, information and all other materials contain in this documentation are provided "as-is" and without warranties of any kind, either express or implied, including, but not limited to, the implied warranties of merchantability, fitness for a particular purpose, satisfactory quality and non-infringement. HERE Technologies does not warrant that the content is error free and HERE Technologies does not warrant or make any representations regarding the quality, correctness, accuracy, or reliability of the content.
 <div style="page-break-after: always;"></div>
 
@@ -21,6 +21,7 @@ Copyright © 2018, HERE Technologies. All rights reserved. The software, informa
 	8. [Initializing the HERE Mobility SDK](#init-sdk)
 	9. [Authenticating App Users](#auth-users)
 	10. [Using the HERE Sandbox Platform](#use-sandbox)
+	11. [Update gms security provider (for Android API <= 19)](#security-provider)
 4. [API REFERENCE](#api-reference)
 
 <div style="page-break-after: always;"></div>
@@ -49,7 +50,7 @@ The Map Services package provides comprehensive map capabilities, including:
 ## 2. Pre-Requisites <a name="prereqs"></a>
 
 ### 2.1. Operating System <a name="os"></a>
-The HERE Mobility SDK version 1.0.13 supports Android version 4.0.4 (API level 15) or later.
+The HERE Mobility SDK version 1.0.15 supports Android version 4.0.4 (API level 15) or later.
 
 
 ## 3. Getting Started <a name="getting-started"></a>
@@ -83,8 +84,8 @@ In your app module’s build.gradle, add the following lines to your dependencie
 ```groovy
 dependencies{
 	...
-	implementation "com.here.mobility.sdk:demand:1.0.13"
-	implementation "com.here.mobility.sdk:map:1.0.13"
+	implementation "com.here.mobility.sdk:demand:1.0.15"
+	implementation "com.here.mobility.sdk:map:1.0.15"
 }
 ```
 
@@ -202,6 +203,13 @@ private static String signedHash(@NonNull String apiKey,     // Your API Key
 You can use the HERE Mobility Sandbox platform to develop and test your app’s functionality without calling the production platform. Requests to the sandbox environment are ephemeral (do not actually affect the real world). 
 
 The HERE Mobility service directs your app’s calls to the sandbox or production environment according to the API key you provide. 
+
+### 3.11. Update GMS security provider (for Android API <= 19) <a name="security-provider"></a>
+Here mobility SDK uses  TLS 1.2.
+
+If your app is using android API version <= 19 the TLS security provider might not be up-to-date, thus all network requests will fail.
+
+Update the security provider using the following link: https://developer.android.com/training/articles/security-gms-provider
 
 ## 4. API Reference <a name="api-reference"></a>
 For detailed information about HERE Mobility SDK functions, please refer to the [HERE Mobility API reference](https://heremobilitydevelopers.github.io/HERE-Mobility-SDK-Android/). 
