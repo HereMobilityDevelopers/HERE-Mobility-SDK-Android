@@ -10,6 +10,7 @@ Copyright © 2018, HERE Technologies. All rights reserved. The software, informa
 	2. [Map Services](#map-services)
 2. [PRE-REQUISITES](#prereqs)
 	1. [Operating System](#os)
+	2. [3rd Party Packages](#3rd-Party-Packages)
 3. [GETTING STARTED](#getting-started)
 	1. [Obtaining HERE Credentials for Your App](#obtain-creds)
 	2. [Integrating Google Play Services into Your App](#google-play-services)
@@ -52,6 +53,9 @@ The Map Services package provides comprehensive map capabilities, including:
 ### 2.1. Operating System <a name="os"></a>
 The HERE Mobility SDK version 1.1.17 supports Android version 4.0.4 (API level 15) or later.
 
+### 2.2. 3rd Party Packages <a name="3rd-Party-Packages"></a>
+* [gRPC](https://github.com/grpc/grpc)
+* [Tangram ES](https://github.com/tangrams/tangram-es)
 
 ## 3. Getting Started <a name="getting-started"></a>
 
