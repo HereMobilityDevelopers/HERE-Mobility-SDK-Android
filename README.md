@@ -1,7 +1,6 @@
 # HERE Mobility - Android SDK
 ### Version 1.1.20, September 2018
-Copyright © 2018, HERE Technologies. All rights reserved. The software, information and all other materials contain in this documentation are confidential and proprietary information of HERE Technologies and are protected by applicable copyright legislation. The disclosure of information contained herein does not constitute any license or authorization to use or disclose information, ideas or concepts presented. No part of this documentation may be disclosed to any third party, copied, reproduced or stored on any type of media or used in any way by any party without the express prior, written consent of Here Technologies. This software, information and all other materials contain in this documentation are provided "as-is" and without warranties of any kind, either express or implied, including, but not limited to, the implied warranties of merchantability, fitness for a particular purpose, satisfactory quality and non-infringement. HERE Technologies does not warrant that the content is error free and HERE Technologies does not warrant or make any representations regarding the quality, correctness, accuracy, or reliability of the content.
-<div style="page-break-after: always;"></div>
+
 
 ## Table of contents
 
@@ -60,14 +59,7 @@ The HERE Mobility SDK version 1.1.20 supports Android version 4.0.4 (API level 1
 ## 3. Getting Started <a name="getting-started"></a>
 
 ### 3.1. Obtaining HERE Credentials for your App <a name="obtain-creds"></a>
-To use the HERE Mobility SDK, you will need to receive an API Key and a Secret Key. To obtain these, contact us at mobility_developers@here.com. 
-
-Please include the following information in your email:  
-
-* Full name 
-* Phone number
-* Application name 
-* Application id (as specified in your `build.gradle`)
+To use the HERE Mobility SDK, you will need to receive an API Key and a Secret Key. To obtain these, please go to our [website](https://developers.mobility.here.com/) and sign up for a developer account.
 
 ### 3.2. Integrating Google Play Services into Your App <a name="google-play-services"></a>
 [Set up Google Play Services](https://developers.google.com/android/guides/setup) in your app and add the play-services-location module as a dependency.
