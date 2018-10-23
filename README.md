@@ -1,15 +1,15 @@
 # HERE Mobility - Android SDK
-### Version 1.1.20, September 2018
-
+### Version 1.1.24, October 2018
 
 ## Table of contents
 
 1. [INTRODUCTION](#introduction)
 	1. [Mobility Demand](#mobility-demand)
 	2. [Map Services](#map-services)
+	3. [Sample apps](#Sample Apps)
 2. [PRE-REQUISITES](#prereqs)
 	1. [Operating System](#os)
-	2. [3rd Party Packages](#3rd-Party-Packages)
+    2. [3rd Party Packages](#3rd-Party-Packages)
 3. [GETTING STARTED](#getting-started)
 	1. [Obtaining HERE Credentials for Your App](#obtain-creds)
 	2. [Integrating Google Play Services into Your App](#google-play-services)
@@ -19,7 +19,7 @@
 	6. [Configuring Your `AndroidManifest.xml` File](#android-xml)
 	7. [Creating an `Application` Class](#application-class)
 	8. [Initializing the HERE Mobility SDK](#init-sdk)
-	9. [Authenticating App Users](#auth-users)
+	9. [Authenticating your app users](#auth-users)
 	10. [Using the HERE Sandbox Platform](#use-sandbox)
 	11. [Update gms security provider (for Android API <= 19)](#security-provider)
 4. [API REFERENCE](#api-reference)
@@ -46,11 +46,17 @@ The Map Services package provides comprehensive map capabilities, including:
 * Dynamic rendering of map display 
 * Point-to-point route calculation
 
+### 1.3. Sample Apps
+Try out our sample apps:
+
+[Android](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp/)
+
+[React Native](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-React-Native-SampleApp)
 
 ## 2. Pre-Requisites <a name="prereqs"></a>
 
 ### 2.1. Operating System <a name="os"></a>
-The HERE Mobility SDK version 1.1.20 supports Android version 4.0.4 (API level 15) or later.
+The HERE Mobility SDK version 1.1.24 supports Android version 4.0.4 (API level 15) or later.
 
 ### 2.2. 3rd Party Packages <a name="3rd-Party-Packages"></a>
 * [gRPC](https://github.com/grpc/grpc)
@@ -80,8 +86,8 @@ In your app module’s build.gradle, add the following lines to your dependencie
 ```groovy
 dependencies{
 	...
-	implementation "com.here.mobility.sdk:demand:1.1.20"
-	implementation "com.here.mobility.sdk:map:1.1.20"
+	implementation "com.here.mobility.sdk:demand:1.1.24"
+	implementation "com.here.mobility.sdk:map:1.1.24"
 }
 ```
 
@@ -149,8 +155,8 @@ public void onCreate(){
 }
 ```
 
-### 3.9. Authenticating App Users <a name="auth-users"></a>
-In order to make Here SDK API calls on behalf of your users (e.g. book rides), you must first "prove" us that they indeed your users by signing their username with your HERE SDK Secret Key. The recommended procedure is to have your backend server do this when the user logs in, and send the signed "hash" to the app. Once the app has the hash, it should pass it to the SDK like so:
+### 3.9.1 Authenticating your app users <a name="auth-users"></a>
+In order to make Here SDK API calls on behalf of your users, you must first "prove" us that they are indeed your app users by signing their username with the Secret Key provided to you as part of your app registration process. The recommended procedure is to have your backend server do the following procedure when users logs in or when the app is activated where no sign in is required (by using random uid) .You will need to generate a signed hash and pass it to the SDK following these steps:
 
 ```java
 HereMobilitySdk.setUserAuthInfo(
@@ -187,6 +193,34 @@ private static String signedHash(@NonNull String apiKey,     // Your API Key
 		throw new IllegalStateException("HmacSHA256 and US-ASCII must be supported", e);
 	}
 }
+```
+_**Note:**_ For reference on how to generate a signed hash (given the secret key) please check [Android sampleApp project](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp) (function `registerUser` in [AuthUtils](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp/blob/master/app/src/main/java/com/here/mobility/sdk/sampleapp/util/AuthUtils.java)).
+
+
+### 3.9.2 Phone verfication 
+
+We require a second level of authentication for booking a ride ,receiving ride updates, cancellation etc.. (all rides related demand API calls) ,verifying that the phone number provided by your users is valid
+You may use the Hash app level user authentication to get access for : requestRideOffers, getVerticalsCoverage requests only.
+Access to the Maps module API doesn’t require phone verification
+Phone number verification is done in 3 steps:
+
+#### 3.9.2.1 Check if phone number is verified
+```java
+	boolean isVerified = MobilitySdk.getInstance().isVerified();
+```
+
+#### 3.9.2.2 Receive verification code SMS
+```java
+	ResponseFuture<Void> futureVerification = 
+			MobilitySdk.getInstance().sendVerificationSms(userPhoneNumber);
+	futureVerification.registerListener(phoneVerificationResponse);
+```
+
+#### 3.9.2.3 Verify phone number
+```java
+	ResponseFuture<Void> verifyPhoneFuture = 
+		MobilitySdk.getInstance().verifyPhoneNumber(phone, code);
+        verifyPhoneFuture.registerListener(verifyPhoneFutureResponse);
 ```
 
 ***Note:*** It's important for us to be sure that each API call to the Mobility Demand API comes from a real user looking for rides because these calls are translated to actual taxis driving to pick up the users. Safeguard your Secret Key, and do not put it in the app, where it can be discovered by disassembling the app.
