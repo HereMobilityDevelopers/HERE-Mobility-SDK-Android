@@ -1,12 +1,12 @@
 # HERE Mobility - Android SDK
-### Version 1.1.24, October 2018
+### Version 1.1.25, October 2018
 
 ## Table of contents
 
 1. [INTRODUCTION](#introduction)
 	1. [Mobility Demand](#mobility-demand)
 	2. [Map Services](#map-services)
-	3. [Sample apps](#Sample Apps)
+	3. [Sample apps](#sample-apps)
 2. [PRE-REQUISITES](#prereqs)
 	1. [Operating System](#os)
     2. [3rd Party Packages](#3rd-Party-Packages)
@@ -46,7 +46,7 @@ The Map Services package provides comprehensive map capabilities, including:
 * Dynamic rendering of map display 
 * Point-to-point route calculation
 
-### 1.3. Sample Apps
+### 1.3. Sample Apps <a name="sample-apps"></a>
 Try out our sample apps:
 
 [Android](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp/)
@@ -56,7 +56,7 @@ Try out our sample apps:
 ## 2. Pre-Requisites <a name="prereqs"></a>
 
 ### 2.1. Operating System <a name="os"></a>
-The HERE Mobility SDK version 1.1.24 supports Android version 4.0.4 (API level 15) or later.
+The HERE Mobility SDK version 1.1.25 supports Android version 4.0.4 (API level 15) or later.
 
 ### 2.2. 3rd Party Packages <a name="3rd-Party-Packages"></a>
 * [gRPC](https://github.com/grpc/grpc)
@@ -65,7 +65,7 @@ The HERE Mobility SDK version 1.1.24 supports Android version 4.0.4 (API level 1
 ## 3. Getting Started <a name="getting-started"></a>
 
 ### 3.1. Obtaining HERE Credentials for your App <a name="obtain-creds"></a>
-To use the HERE Mobility SDK, you will need to receive an API Key and a Secret Key. To obtain these, please go to our [website](https://developers.mobility.here.com/) and sign up for a developer account.
+To use the HERE Mobility SDK, you will need to receive an API Key and a Secret Key. To obtain these, please go to our [website](https://developers.mobility.here.com/) and sign up for a developer account. 
 
 ### 3.2. Integrating Google Play Services into Your App <a name="google-play-services"></a>
 [Set up Google Play Services](https://developers.google.com/android/guides/setup) in your app and add the play-services-location module as a dependency.
@@ -86,8 +86,8 @@ In your app module’s build.gradle, add the following lines to your dependencie
 ```groovy
 dependencies{
 	...
-	implementation "com.here.mobility.sdk:demand:1.1.24"
-	implementation "com.here.mobility.sdk:map:1.1.24"
+	implementation "com.here.mobility.sdk:demand:1.1.25"
+	implementation "com.here.mobility.sdk:map:1.1.25"
 }
 ```
 
