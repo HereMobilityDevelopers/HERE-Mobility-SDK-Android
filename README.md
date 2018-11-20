@@ -1,5 +1,5 @@
 # HERE Mobility - Android SDK
-### Version 1.1.25, October 2018
+### Version 1.1.35, November 2018
 
 ## Table of contents
 
@@ -9,7 +9,7 @@
 	3. [Sample apps](#sample-apps)
 2. [PRE-REQUISITES](#prereqs)
 	1. [Operating System](#os)
-    2. [3rd Party Packages](#3rd-Party-Packages)
+       2. [3rd Party Packages](#3rd-Party-Packages)
 3. [GETTING STARTED](#getting-started)
 	1. [Obtaining HERE Credentials for Your App](#obtain-creds)
 	2. [Integrating Google Play Services into Your App](#google-play-services)
@@ -56,7 +56,7 @@ Try out our sample apps:
 ## 2. Pre-Requisites <a name="prereqs"></a>
 
 ### 2.1. Operating System <a name="os"></a>
-The HERE Mobility SDK version 1.1.25 supports Android version 4.0.4 (API level 15) or later.
+The HERE Mobility SDK version 1.1.35 supports Android version 4.0.4 (API level 15) or later.
 
 ### 2.2. 3rd Party Packages <a name="3rd-Party-Packages"></a>
 * [gRPC](https://github.com/grpc/grpc)
@@ -86,8 +86,8 @@ In your app module’s build.gradle, add the following lines to your dependencie
 ```groovy
 dependencies{
 	...
-	implementation "com.here.mobility.sdk:demand:1.1.25"
-	implementation "com.here.mobility.sdk:map:1.1.25"
+	implementation "com.here.mobility.sdk:demand:1.1.35"
+	implementation "com.here.mobility.sdk:map:1.1.35"
 }
 ```
 
@@ -125,6 +125,7 @@ Add the following lines to the `<application>` section of your `AndroidManifest.
 ```xml
 <meta-data android:name="com.here.mobility.sdk.API_KEY" android:value="YOUR_API_KEY"/> 
 ```
+Alternately you may set the  API key in code. see 3.8. below
 
 #### Internet and Location Access Permissions
 To allow your app to access location information and to enable HERE Mobility SDK operation, add the following permissions to your AndroidManifest.xml file: 
@@ -146,8 +147,8 @@ In your `Application` class’ `onCreate()` method, add Sdk.init(this), as follo
 public void onCreate(){
 	super.onCreate();
 	
-	HereMobilitySdk.init(this);
-	if (HereMobilitySdk.isHereAgentProcess(this)){
+	MobilitySdk.init(this);
+	if (MobilitySdk.getInstance().isHereAgentProcess()){
 		return;
 	}
 	
@@ -155,11 +156,17 @@ public void onCreate(){
 }
 ```
 
+If you wish to set your  API key in code instead of in manifest, you should call
+```java
+    MobilitySdk.init(this, YOUR_API_KEY);
+```
+Instead.
+
 ### 3.9.1 Authenticating your app users <a name="auth-users"></a>
 In order to make Here SDK API calls on behalf of your users, you must first "prove" us that they are indeed your app users by signing their username with the Secret Key provided to you as part of your app registration process. The recommended procedure is to have your backend server do the following procedure when users logs in or when the app is activated where no sign in is required (by using random uid) .You will need to generate a signed hash and pass it to the SDK following these steps:
 
 ```java
-HereMobilitySdk.setUserAuthInfo(
+MobilitySdk.getInstance().setUserAuthInfo(
 	HereSdkUserAuthInfo.create(userId, expirationInSeconds, signedHash));
 ```
 The expiration parameter tells us when this authentication (in seconds, since Epoch) expires and should no longer be accepted by our servers.
