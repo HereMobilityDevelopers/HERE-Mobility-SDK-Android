@@ -1,27 +1,27 @@
 # HERE Mobility - Android SDK
-### Version 1.1.35, November 2018
+### Version 1.1.36, November 2018
 
 ## Table of contents
 
 1. [INTRODUCTION](#introduction)
-	1. [Mobility Demand](#mobility-demand)
-	2. [Map Services](#map-services)
-	3. [Sample apps](#sample-apps)
+1. [Mobility Demand](#mobility-demand)
+2. [Map Services](#map-services)
+3. [Sample apps](#sample-apps)
 2. [PRE-REQUISITES](#prereqs)
-	1. [Operating System](#os)
-       2. [3rd Party Packages](#3rd-Party-Packages)
+1. [Operating System](#os)
+2. [3rd Party Packages](#3rd-Party-Packages)
 3. [GETTING STARTED](#getting-started)
-	1. [Obtaining HERE Credentials for Your App](#obtain-creds)
-	2. [Integrating Google Play Services into Your App](#google-play-services)
-	3. [Adding the HERE Mobility SDK as a Dependency](#add-dependency)
-	4. [Enabling Multidex](#multidex)
-	5. [Setting the Java Language Version](#java-version)
-	6. [Configuring Your `AndroidManifest.xml` File](#android-xml)
-	7. [Creating an `Application` Class](#application-class)
-	8. [Initializing the HERE Mobility SDK](#init-sdk)
-	9. [Authenticating your app users](#auth-users)
-	10. [Using the HERE Sandbox Platform](#use-sandbox)
-	11. [Update gms security provider (for Android API <= 19)](#security-provider)
+1. [Obtaining HERE Credentials for Your App](#obtain-creds)
+2. [Integrating Google Play Services into Your App](#google-play-services)
+3. [Adding the HERE Mobility SDK as a Dependency](#add-dependency)
+4. [Enabling Multidex](#multidex)
+5. [Setting the Java Language Version](#java-version)
+6. [Configuring Your `AndroidManifest.xml` File](#android-xml)
+7. [Creating an `Application` Class](#application-class)
+8. [Initializing the HERE Mobility SDK](#init-sdk)
+9. [Authenticating your app users](#auth-users)
+10. [Using the HERE Sandbox Platform](#use-sandbox)
+11. [Update gms security provider (for Android API <= 19)](#security-provider)
 4. [API REFERENCE](#api-reference)
 
 <div style="page-break-after: always;"></div>
@@ -56,7 +56,7 @@ Try out our sample apps:
 ## 2. Pre-Requisites <a name="prereqs"></a>
 
 ### 2.1. Operating System <a name="os"></a>
-The HERE Mobility SDK version 1.1.35 supports Android version 4.0.4 (API level 15) or later.
+The HERE Mobility SDK version 1.1.36 supports Android version 4.0.4 (API level 15) or later.
 
 ### 2.2. 3rd Party Packages <a name="3rd-Party-Packages"></a>
 * [gRPC](https://github.com/grpc/grpc)
@@ -75,19 +75,19 @@ In your project’s root `build.gradle`, add the following to your repositories 
 
 ```groovy
 repositories{ 
-	...
-	maven{
-		url "https://mobility.bintray.com/sdk"
-	} 
+...
+maven{
+url "https://mobility.bintray.com/sdk"
+} 
 }
 ```
 In your app module’s build.gradle, add the following lines to your dependencies section (only include the modules you want):
 
 ```groovy
 dependencies{
-	...
-	implementation "com.here.mobility.sdk:demand:1.1.35"
-	implementation "com.here.mobility.sdk:map:1.1.35"
+...
+implementation "com.here.mobility.sdk:demand:1.1.36"
+implementation "com.here.mobility.sdk:map:1.1.36"
 }
 ```
 
@@ -99,22 +99,22 @@ If you’re using Java 7, add the following to the Android section of your app m
 
 ```groovy
 android{ 
-	...
-	compileOptions{ 
-		sourceCompatibility JavaVersion.VERSION_1_7 
-		targetCompatibility JavaVersion.VERSION_1_8 
-	}
+...
+compileOptions{ 
+sourceCompatibility JavaVersion.VERSION_1_7 
+targetCompatibility JavaVersion.VERSION_1_8 
+}
 }
 ```
 If you’re using Java 8, add the following to the Android section of your app module’s build.gradle:
 
 ```groovy
 android{ 
-	...
-	compileOptions{ 
-		sourceCompatibility JavaVersion.VERSION_1_8 
-		targetCompatibility JavaVersion.VERSION_1_8 
-	}
+...
+compileOptions{ 
+sourceCompatibility JavaVersion.VERSION_1_8 
+targetCompatibility JavaVersion.VERSION_1_8 
+}
 }
 ```
 
@@ -145,20 +145,20 @@ In your `Application` class’ `onCreate()` method, add Sdk.init(this), as follo
 
 ```java
 public void onCreate(){
-	super.onCreate();
-	
-	MobilitySdk.init(this);
-	if (MobilitySdk.getInstance().isHereAgentProcess()){
-		return;
-	}
-	
-	// The rest of your code, if any, here
+super.onCreate();
+
+MobilitySdk.init(this);
+if (MobilitySdk.getInstance().isHereAgentProcess()){
+return;
+}
+
+// The rest of your code, if any, here
 }
 ```
 
 If you wish to set your  API key in code instead of in manifest, you should call
 ```java
-    MobilitySdk.init(this, YOUR_API_KEY);
+MobilitySdk.init(this, YOUR_API_KEY);
 ```
 Instead.
 
@@ -167,7 +167,7 @@ In order to make Here SDK API calls on behalf of your users, you must first "pro
 
 ```java
 MobilitySdk.getInstance().setUserAuthInfo(
-	HereSdkUserAuthInfo.create(userId, expirationInSeconds, signedHash));
+HereSdkUserAuthInfo.create(userId, expirationInSeconds, signedHash));
 ```
 The expiration parameter tells us when this authentication (in seconds, since Epoch) expires and should no longer be accepted by our servers.
 
@@ -176,29 +176,29 @@ Below is example Android code that uses the Secret Key to generate a signed hash
 ```java
 @NonNull
 private static String signedHash(@NonNull String apiKey,     // Your API Key
-                                 @NonNull String userId,     // The user's id in your app
-                                 long expirationInSeconds,   // Expiration timestamp
-                                 @NonNull String secretKey){ // Your Secret Key
-	try{
-		Mac mac = Mac.getInstance("HmacSHA256");
-		Charset ascii = Charset.forName("US-ASCII");
-		mac.init(new SecretKeySpec(secretKey.getBytes(ascii), mac.getAlgorithm()));
-		
-		String apiKey64 = Base64.encodeToString(apiKey.getBytes(ascii), Base64.NO_WRAP);
-		String userId64 = Base64.encodeToString(userId.getBytes(ascii), Base64.NO_WRAP);
+@NonNull String userId,     // The user's id in your app
+long expirationInSeconds,   // Expiration timestamp
+@NonNull String secretKey){ // Your Secret Key
+try{
+Mac mac = Mac.getInstance("HmacSHA256");
+Charset ascii = Charset.forName("US-ASCII");
+mac.init(new SecretKeySpec(secretKey.getBytes(ascii), mac.getAlgorithm()));
 
-		String data = apiKey64 + "." + userId64 + "." + expirationInSeconds;
-		byte[] rawHash = mac.doFinal(data.getBytes(ascii));
-		
-		// Encode into a hexadecimal string
-		StringBuilder hash = new StringBuilder();
-		for (int i = 0; i < rawHash.length; ++i){
-			hash.append(String.format("%02x", rawHash[i]));
-		}
-		return hash.toString();
-	} catch (NoSuchAlgorithmException | InvalidKeyException e){
-		throw new IllegalStateException("HmacSHA256 and US-ASCII must be supported", e);
-	}
+String apiKey64 = Base64.encodeToString(apiKey.getBytes(ascii), Base64.NO_WRAP);
+String userId64 = Base64.encodeToString(userId.getBytes(ascii), Base64.NO_WRAP);
+
+String data = apiKey64 + "." + userId64 + "." + expirationInSeconds;
+byte[] rawHash = mac.doFinal(data.getBytes(ascii));
+
+// Encode into a hexadecimal string
+StringBuilder hash = new StringBuilder();
+for (int i = 0; i < rawHash.length; ++i){
+hash.append(String.format("%02x", rawHash[i]));
+}
+return hash.toString();
+} catch (NoSuchAlgorithmException | InvalidKeyException e){
+throw new IllegalStateException("HmacSHA256 and US-ASCII must be supported", e);
+}
 }
 ```
 _**Note:**_ For reference on how to generate a signed hash (given the secret key) please check [Android sampleApp project](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp) (function `registerUser` in [AuthUtils](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp/blob/master/app/src/main/java/com/here/mobility/sdk/sampleapp/util/AuthUtils.java)).
@@ -213,21 +213,21 @@ Phone number verification is done in 3 steps:
 
 #### 3.9.2.1 Check if phone number is verified
 ```java
-	boolean isVerified = MobilitySdk.getInstance().isVerified();
+boolean isVerified = MobilitySdk.getInstance().isVerified();
 ```
 
 #### 3.9.2.2 Receive verification code SMS
 ```java
-	ResponseFuture<Void> futureVerification = 
-			MobilitySdk.getInstance().sendVerificationSms(userPhoneNumber);
-	futureVerification.registerListener(phoneVerificationResponse);
+ResponseFuture<Void> futureVerification = 
+MobilitySdk.getInstance().sendVerificationSms(userPhoneNumber);
+futureVerification.registerListener(phoneVerificationResponse);
 ```
 
 #### 3.9.2.3 Verify phone number
 ```java
-	ResponseFuture<Void> verifyPhoneFuture = 
-		MobilitySdk.getInstance().verifyPhoneNumber(phone, code);
-        verifyPhoneFuture.registerListener(verifyPhoneFutureResponse);
+ResponseFuture<Void> verifyPhoneFuture = 
+MobilitySdk.getInstance().verifyPhoneNumber(phone, code);
+verifyPhoneFuture.registerListener(verifyPhoneFutureResponse);
 ```
 
 ***Note:*** It's important for us to be sure that each API call to the Mobility Demand API comes from a real user looking for rides because these calls are translated to actual taxis driving to pick up the users. Safeguard your Secret Key, and do not put it in the app, where it can be discovered by disassembling the app.
