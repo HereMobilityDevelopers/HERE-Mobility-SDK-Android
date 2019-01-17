@@ -65,7 +65,7 @@ The HERE Mobility SDK version 1.1.42 supports Android version 4.0.4 (API level 1
 ## 3. Getting Started <a name="getting-started"></a>
 
 ### 3.1. Obtaining HERE Credentials for your App <a name="obtain-creds"></a>
-To use the HERE Mobility SDK, you will need to receive an API Key and a Secret Key. To obtain these, please go to our [website](https://developers.mobility.here.com/) and sign up for a developer account. 
+To use the HERE Mobility SDK, you'll need App ID key and App secret key values. To get new app keys, sign up first to Here [Mobility Developer Zone](https://developer.mobility.here.com) and then register your app using the app bundle id/package name.
 
 ### 3.2. Integrating Google Play Services into Your App <a name="google-play-services"></a>
 [Set up Google Play Services](https://developers.google.com/android/guides/setup) in your app and add the play-services-location module as a dependency.
