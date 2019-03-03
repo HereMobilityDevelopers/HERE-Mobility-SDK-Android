@@ -1,0 +1,10 @@
+com.here.mobility.sdk.core
+com.here.mobility.sdk.core.auth
+com.here.mobility.sdk.core.geo
+com.here.mobility.sdk.core.net
+com.here.mobility.sdk.core.sdk
+com.here.mobility.sdk.core.util
+com.here.mobility.sdk.demand
+com.here.mobility.sdk.map
+com.here.mobility.sdk.map.geocoding
+com.here.mobility.sdk.map.route
