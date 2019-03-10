@@ -1,5 +1,5 @@
 # HERE Mobility - Android SDK
-### Version 1.1.58, March 2019
+### Version 1.1.62, March 2019
 
 ## Table of contents
 
@@ -22,7 +22,8 @@
 	9. [Authenticating your app users](#auth-users)
 	10. [Using the HERE Sandbox Platform](#use-sandbox)
 	11. [Update gms security provider (for Android API <= 19)](#security-provider)
-4. [API REFERENCE](#api-reference)
+4. [TUTORIAL](#tutorial)
+5. [API REFERENCE](#api-reference)
 
 <div style="page-break-after: always;"></div>
 
@@ -56,7 +57,7 @@ Try out our sample apps:
 ## 2. Pre-Requisites <a name="prereqs"></a>
 
 ### 2.1. Operating System <a name="os"></a>
-The HERE Mobility SDK version 1.1.58 supports Android version 4.1 (API level 16) or later.
+The HERE Mobility SDK version 1.1.62 supports Android version 4.1 (API level 16) or later.
 
 ### 2.2. 3rd Party Packages <a name="3rd-Party-Packages"></a>
 * [gRPC](https://github.com/grpc/grpc)
@@ -86,8 +87,8 @@ In your app module’s build.gradle, add the following lines to your dependencie
 ```groovy
 dependencies{
 	...
-	implementation "com.here.mobility.sdk:demand:1.1.58"
-	implementation "com.here.mobility.sdk:map:1.1.58"
+	implementation "com.here.mobility.sdk:demand:1.1.62"
+	implementation "com.here.mobility.sdk:map:1.1.62"
 }
 ```
 
@@ -248,5 +249,8 @@ If your app is using android API version <= 19 the TLS security provider might n
 
 Update the security provider using the following link: https://developer.android.com/training/articles/security-gms-provider
 
-## 4. API Reference <a name="api-reference"></a>
+## 4. TUTORIAL <a name="tutorial"></a>
+For Tutorial [HERE Mobility Tutorial](tutorial.md). 
+
+## 5. API Reference <a name="api-reference"></a>
 For detailed information about HERE Mobility SDK functions, please refer to the [HERE Mobility API reference](https://heremobilitydevelopers.github.io/HERE-Mobility-SDK-Android/). 
