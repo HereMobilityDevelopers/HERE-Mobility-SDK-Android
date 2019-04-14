@@ -1,5 +1,5 @@
 # HERE Mobility - Android SDK
-### Version 1.1.64, March 2019
+### Version 2.0.68, April 2019
 
 ## Table of contents
 
@@ -9,7 +9,6 @@
 	3. [Sample apps](#sample-apps)
 2. [PRE-REQUISITES](#prereqs)
 	1. [Operating System](#os)
-	2. [3rd Party Packages](#3rd-Party-Packages)
 3. [GETTING STARTED](#getting-started)
 	1. [Obtaining HERE Credentials for Your App](#obtain-creds)
 	2. [Integrating Google Play Services into Your App](#google-play-services)
@@ -19,11 +18,12 @@
 	6. [Configuring Your `AndroidManifest.xml` File](#android-xml)
 	7. [Creating an `Application` Class](#application-class)
 	8. [Initializing the HERE Mobility SDK](#init-sdk)
-	9. [Authenticating your app users](#auth-users)
+	9. [Authenticating your app](#auth-app)
 	10. [Using the HERE Sandbox Platform](#use-sandbox)
 	11. [Update gms security provider (for Android API <= 19)](#security-provider)
-4. [TUTORIAL](#tutorial)
-5. [API REFERENCE](#api-reference)
+4. [3rd Party dependencies](#3rd-Party-Packages)
+5. [TUTORIAL](#tutorial)
+6. [API REFERENCE](#api-reference)
 
 <div style="page-break-after: always;"></div>
 
@@ -38,7 +38,7 @@ The HERE Mobility SDK contains 2 packages:
 You can use any combination of these packages. The only requirement is that you use the same version for all of them.
 
 ### 1.1. Mobility Demand<a name="mobility-demand"></a>
-The Mobility Demand package allows your app’s users to request and manage passenger rides anywhere in the world, supplied through the HERE Mobility Marketplace. This includes requesting ride offers, booking and canceling rides, and updating a ride’s status.
+The Mobility Demand package allows your app to request and manage passenger rides anywhere in the world, supplied with the HERE Mobility Marketplace. This includes requesting ride offers, booking and canceling rides, and updating a ride’s status.
 
 ### 1.2. Map Services <a name="map-services"></a>
 The Map Services package provides comprehensive map capabilities, including: 
@@ -57,11 +57,9 @@ Try out our sample apps:
 ## 2. Pre-Requisites <a name="prereqs"></a>
 
 ### 2.1. Operating System <a name="os"></a>
-The HERE Mobility SDK version 1.1.64 supports Android version 4.1 (API level 16) or later.
+The HERE Mobility SDK version 2.0.68 supports Android version 4.1 (API level 16) or later.
 
-### 2.2. 3rd Party Packages <a name="3rd-Party-Packages"></a>
-* [gRPC](https://github.com/grpc/grpc)
-* [Tangram ES](https://github.com/tangrams/tangram-es)
+Also the SDK requires [androidx](https://developer.android.com/jetpack/androidx) components.
 
 ## 3. Getting Started <a name="getting-started"></a>
 
@@ -87,8 +85,8 @@ In your app module’s build.gradle, add the following lines to your dependencie
 ```groovy
 dependencies{
 	...
-	implementation "com.here.mobility.sdk:demand:1.1.64"
-	implementation "com.here.mobility.sdk:map:1.1.64"
+	implementation "com.here.mobility.sdk:demand:2.0.68"
+	implementation "com.here.mobility.sdk:map:2.0.68"
 }
 ```
 
@@ -163,33 +161,37 @@ If you wish to set your  API key in code instead of in manifest, you should call
 ```
 Instead.
 
-### 3.9.1 Authenticating your app users <a name="auth-users"></a>
-In order to make Here SDK API calls on behalf of your users, you must first "prove" us that they are indeed your app users by signing their username with the Secret Key provided to you as part of your app registration process. The recommended procedure is to have your backend server do the following procedure when users logs in or when the app is activated where no sign in is required (by using random uid) .You will need to generate a signed hash and pass it to the SDK following these steps:
+### 3.9.1 Authenticating your app <a name="auth-app"></a>
+In order to make Here SDK API calls, we must validate your app by signing your App Key with the Secret Key provided to you as part of your app registration process. 
+You may use the Hash app level authentication to get access for : requestRideOffers, getVerticalsCoverage requests only.
+The recommended procedure is:
+1. Hold your secret key in the backend server of your app.
+2. Generate the hash in your app's backend.
+3. Pass the hash to the client.
+
+Then pass it to the SDK following these steps:
 
 ```java
-MobilitySdk.getInstance().setUserAuthInfo(
-	HereSdkUserAuthInfo.create(userId, expirationInSeconds, signedHash));
+MobilitySdk.getInstance().authenticateApplication(
+	ApplicationAuthInfo.create(hash, currentTimeSec));
 ```
-The expiration parameter tells us when this authentication (in seconds, since Epoch) expires and should no longer be accepted by our servers.
+The currentTimeSec parameter tells us when this authentication hash was created (in seconds, since Epoch) .
 
 Below is example Android code that uses the Secret Key to generate a signed hash:
 
 ```java
 @NonNull
 private static String signedHash(@NonNull String apiKey,     // Your API Key
-                                 @NonNull String userId,     // The user's id in your app
-                                 long expirationInSeconds,   // Expiration timestamp
+                                    long currentTimeSec,     // The creation time of the Application auth info in seconds since epoch
                                  @NonNull String secretKey){ // Your Secret Key
 	try{
-		Mac mac = Mac.getInstance("HmacSHA256");
+		Mac mac = Mac.getInstance("HmacSHA384");
 		Charset ascii = Charset.forName("US-ASCII");
 		mac.init(new SecretKeySpec(secretKey.getBytes(ascii), mac.getAlgorithm()));
 		
 		String apiKey64 = Base64.encodeToString(apiKey.getBytes(ascii), Base64.NO_WRAP);
-		String userId64 = Base64.encodeToString(userId.getBytes(ascii), Base64.NO_WRAP);
-
-		String data = apiKey64 + "." + userId64 + "." + expirationInSeconds;
-		byte[] rawHash = mac.doFinal(data.getBytes(ascii));
+       String data = apiKey64 + "." + currentTimeSec;
+       byte[] rawHash = mac.doFinal(data.getBytes(ascii));
 		
 		// Encode into a hexadecimal string
 		StringBuilder hash = new StringBuilder();
@@ -198,43 +200,51 @@ private static String signedHash(@NonNull String apiKey,     // Your API Key
 		}
 		return hash.toString();
 	} catch (NoSuchAlgorithmException | InvalidKeyException e){
-		throw new IllegalStateException("HmacSHA256 and US-ASCII must be supported", e);
+		throw new IllegalStateException("HmacSHA384 and US-ASCII must be supported", e);
 	}
 }
 ```
-_**Note:**_ For reference on how to generate a signed hash (given the secret key) please check [Android sampleApp project](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp) (function `registerUser` in [AuthUtils](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp/blob/master/app/src/main/java/com/here/mobility/sdk/sampleapp/util/AuthUtils.java)).
+_**Note:**_ For reference on how to generate a signed hash (given the secret key) please check [Android sampleApp project](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp) (function `appLogin` in [AuthUtils](https://github.com/HereMobilityDevelopers/Here-Mobility-SDK-Android-SampleApp/blob/master/app/src/main/java/com/here/mobility/sdk/sampleapp/util/AuthUtils.java)).
 
 
-### 3.9.2 Phone verfication 
+### 3.9.2 User verfication 
 
-We require a second level of authentication for booking a ride ,receiving ride updates, cancellation etc.. (all rides related demand API calls) ,verifying that the phone number provided by your users is valid
-You may use the Hash app level user authentication to get access for : requestRideOffers, getVerticalsCoverage requests only.
-Access to the Maps module API doesn’t require phone verification
-Phone number verification is done in 3 steps:
+We require a second level of authentication for booking a ride ,receiving ride updates, cancellation etc.. (all rides related demand API calls) ,verifying that the phone number or email provided by your users is valid.
+Access to the Maps module API doesn’t require phoneor email verification
+Phone number or email verification is done in 3 steps:
 
-#### 3.9.2.1 Check if phone number is verified
+#### 3.9.2.1 Check if user is verified
 ```java
 	boolean isVerified = MobilitySdk.getInstance().isVerified();
 ```
 
-#### 3.9.2.2 Receive verification code SMS
+#### 3.9.2.2 Receive verification code by phone number or email
+Phone verification:
 ```java
 	ResponseFuture<Void> futureVerification = 
 			MobilitySdk.getInstance().sendVerificationSms(userPhoneNumber);
-	futureVerification.registerListener(phoneVerificationResponse);
+	futureVerification.registerListener(phoneVerificationResponseListener);
+```
+Email verification:
+```java
+ResponseFuture<Void> futureVerification = 
+MobilitySdk.getInstance().sendVerificationEmail(userEmail);
+futureVerification.registerListener(emailVerificationResponseListener);
 ```
 
-#### 3.9.2.3 Verify phone number
+#### 3.9.2.3 Verify pin
+Verify phone number pin:
 ```java
 	ResponseFuture<Void> verifyPhoneFuture = 
 		MobilitySdk.getInstance().verifyPhoneNumber(phone, code);
-        verifyPhoneFuture.registerListener(verifyPhoneFutureResponse);
+        verifyPhoneFuture.registerListener(verifyPhoneFutureResponseListener);
 ```
-
-***Note:*** It's important for us to be sure that each API call to the Mobility Demand API comes from a real user looking for rides because these calls are translated to actual taxis driving to pick up the users. Safeguard your Secret Key, and do not put it in the app, where it can be discovered by disassembling the app.
-
-***Note for TechCrunch Hackathon developers:*** During the hackathon, and only then, for the purpose of saving time, you may put your Secret Key in the app, and perform the signing on the client.
-
+Verify email pin:
+```java
+ResponseFuture<Void> verifyEmailFuture = 
+MobilitySdk.getInstance().verifyEmail(email, code);
+verifyPhoneFuture.registerListener(verifyEmailFutureResponseListener);
+```
 
 
 ### 3.10. Using the HERE Sandbox Platform <a name="use-sandbox"></a>
@@ -249,8 +259,12 @@ If your app is using android API version <= 19 the TLS security provider might n
 
 Update the security provider using the following link: https://developer.android.com/training/articles/security-gms-provider
 
-## 4. TUTORIAL <a name="tutorial"></a>
+## 4. 3rd Party Packages <a name="3rd-Party-Packages"></a>
+* [gRPC](https://github.com/grpc/grpc)
+* [Tangram ES](https://github.com/tangrams/tangram-es)
+
+## 5. TUTORIAL <a name="tutorial"></a>
 For Tutorial [HERE Mobility Tutorial](tutorial.md). 
 
-## 5. API Reference <a name="api-reference"></a>
+## 6. API Reference <a name="api-reference"></a>
 For detailed information about HERE Mobility SDK functions, please refer to the [HERE Mobility API reference](https://heremobilitydevelopers.github.io/HERE-Mobility-SDK-Android/). 
