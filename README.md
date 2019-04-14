@@ -215,7 +215,7 @@ Phone number or email verification is done in 3 steps:
 
 #### 3.9.2.1 Check if user is verified
 ```java
-	boolean isVerified = MobilitySdk.getInstance().isVerified();
+	boolean isUserVerified = MobilitySdk.getInstance().isUserVerified();
 ```
 
 #### 3.9.2.2 Receive verification code by phone number or email
@@ -235,15 +235,15 @@ futureVerification.registerListener(emailVerificationResponseListener);
 #### 3.9.2.3 Verify pin
 Verify phone number pin:
 ```java
-	ResponseFuture<Void> verifyPhoneFuture = 
-		MobilitySdk.getInstance().verifyPhoneNumber(phone, code);
-        verifyPhoneFuture.registerListener(verifyPhoneFutureResponseListener);
+	ResponseFuture<Void> verifyUserPhoneFuture = 
+		MobilitySdk.getInstance().verifyUserPhoneNumber(phone, code);
+        verifyUserPhoneFuture.registerListener(verifyPhoneFutureResponseListener);
 ```
 Verify email pin:
 ```java
-ResponseFuture<Void> verifyEmailFuture = 
-MobilitySdk.getInstance().verifyEmail(email, code);
-verifyPhoneFuture.registerListener(verifyEmailFutureResponseListener);
+ResponseFuture<Void> verifyUserEmailFuture = 
+MobilitySdk.getInstance().verifyUserEmail(email, code);
+verifyUserEmailFuture.registerListener(verifyEmailFutureResponseListener);
 ```
 
 
