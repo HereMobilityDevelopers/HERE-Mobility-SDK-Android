@@ -1,5 +1,5 @@
 # HERE Mobility - Android SDK
-### Version 2.0.71, May 2019
+### Version 2.0.72, July 2019
 
 ## Table of contents
 
@@ -57,7 +57,7 @@ Try out our sample apps:
 ## 2. Pre-Requisites <a name="prereqs"></a>
 
 ### 2.1. Operating System <a name="os"></a>
-The HERE Mobility SDK version 2.0.71 supports Android version 4.1 (API level 16) or later.
+The HERE Mobility SDK version 2.0.72 supports Android version 4.1 (API level 16) or later.
 
 Also the SDK requires [androidx](https://developer.android.com/jetpack/androidx) components.
 
@@ -85,8 +85,8 @@ In your app module’s build.gradle, add the following lines to your dependencie
 ```groovy
 dependencies{
 	...
-	implementation "com.here.mobility.sdk:demand:2.0.71"
-	implementation "com.here.mobility.sdk:map:2.0.71"
+	implementation "com.here.mobility.sdk:demand:2.0.72"
+	implementation "com.here.mobility.sdk:map:2.0.72"
 }
 ```
 
